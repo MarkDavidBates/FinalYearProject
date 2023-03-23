@@ -2,10 +2,10 @@
 #include <utility/wifi_drv.h>
 #include <dht.h>
 
-#define DATABASE_URL "homegrower-database-default-rtdb.europe-west1.firebasedatabase.app" //<databaseName>.firebaseio.com or <databaseName>.<region>.firebasedatabase.app
-#define DATABASE_SECRET "VQckmdJ3AdryXl4vlzcFQmqtGfY6Yukvow0jl8Se"
-#define WIFI_SSID "eir69785572"
-#define WIFI_PASSWORD "jXtk9ceP76"
+#define DATABASE_URL "YOUR DATABASE LINK" //<databaseName>.firebaseio.com or <databaseName>.<region>.firebasedatabase.app
+#define DATABASE_SECRET "YOUR SECRET"
+#define WIFI_SSID "YOUR SSID"
+#define WIFI_PASSWORD "YOUR PASSWORD"
 #define dht_apin A0
 #define sensor_pin A1
 
