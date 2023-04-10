@@ -2,10 +2,10 @@
 #include <utility/wifi_drv.h>
 #include <dht.h>
 
-#define DATABASE_URL "YOUR DATABASE LINK" //<databaseName>.firebaseio.com or <databaseName>.<region>.firebasedatabase.app
-#define DATABASE_SECRET "YOUR SECRET"
-#define WIFI_SSID "YOUR SSID"
-#define WIFI_PASSWORD "YOUR PASSWORD"
+#define DATABASE_URL "YOUR_DATABASE_URL" //<databaseName>.firebaseio.com or <databaseName>.<region>.firebasedatabase.app
+#define DATABASE_SECRET "YOUR_SECRET"
+#define WIFI_SSID "YOUR_SSID"
+#define WIFI_PASSWORD "YOUR_PASSWORD"
 #define dht_apin A0
 #define sensor_pin A1
 
@@ -51,11 +51,7 @@ void setup() {
 }
 
 void loop() {
-
-  String path = "/test";
-  String UID = "/000001";
-  String jsonStr;  
-
+    
   int sensorValue = analogRead(sensor_pin);  // Read the analog value from sensor
   int moisture_percentage = map(sensorValue, 0, 1023, 255, 0); // map the 10-bit data to 8-bit data
 
@@ -72,105 +68,43 @@ void loop() {
 
   delay(5000);
   Serial.print("sending data to firebase");
-  unsigned long long tempVal = DHT.temperature;
-  unsigned long long humidVal = DHT.humidity; 
-  unsigned long long moistureVal = moisture_percentage;
-
-  if (Firebase.setInt(fbdo, path + "/sensorData/temperature", tempVal)) //support large number
-  {
-    Serial.println("ok");
-    Serial.println("path: " + fbdo.dataPath());
-    Serial.println("type: " + fbdo.dataType());
-    Serial.print("value: ");
-    if (fbdo.dataType() == "int")
-      Serial.println(fbdo.intData());
-    if (fbdo.dataType() == "int64")
-      Serial.println(fbdo.int64Data());
-    if (fbdo.dataType() == "uint64")
-      Serial.println(fbdo.uint64Data());
-    else if (fbdo.dataType() == "double")
-      Serial.println(fbdo.doubleData());
-    else if (fbdo.dataType() == "float")
-      Serial.println(fbdo.floatData());
-    else if (fbdo.dataType() == "boolean")
-      Serial.println(fbdo.boolData() == 1 ? "true" : "false");
-    else if (fbdo.dataType() == "string")
-      Serial.println(fbdo.stringData());
-    else if (fbdo.dataType() == "json")
-      Serial.println(fbdo.jsonData());
-    else if (fbdo.dataType() == "array")
-      Serial.println(fbdo.arrayData());
-  }
-  else
-  {
-    Serial.println("error, " + fbdo.errorReason());
-  }
-
-  Serial.println();
-
-  if (Firebase.setInt(fbdo, path + "/sensorData/humidity", humidVal)) //support large number
-  {
-    Serial.println("ok");
-    Serial.println("path: " + fbdo.dataPath());
-    Serial.println("type: " + fbdo.dataType());
-    Serial.print("value: ");
-    if (fbdo.dataType() == "int")
-      Serial.println(fbdo.intData());
-    if (fbdo.dataType() == "int64")
-      Serial.println(fbdo.int64Data());
-    if (fbdo.dataType() == "uint64")
-      Serial.println(fbdo.uint64Data());
-    else if (fbdo.dataType() == "double")
-      Serial.println(fbdo.doubleData());
-    else if (fbdo.dataType() == "float")
-      Serial.println(fbdo.floatData());
-    else if (fbdo.dataType() == "boolean")
-      Serial.println(fbdo.boolData() == 1 ? "true" : "false");
-    else if (fbdo.dataType() == "string")
-      Serial.println(fbdo.stringData());
-    else if (fbdo.dataType() == "json")
-      Serial.println(fbdo.jsonData());
-    else if (fbdo.dataType() == "array")
-      Serial.println(fbdo.arrayData());
-  }
-  else
-  {
-    Serial.println("error, " + fbdo.errorReason());
-  } 
-
-  Serial.println();
-
-  if (Firebase.setInt(fbdo, path + "/sensorData/moisture", moistureVal)) //support large number
-  {
-    Serial.println("ok");
-    Serial.println("path: " + fbdo.dataPath());
-    Serial.println("type: " + fbdo.dataType());
-    Serial.print("value: ");
-    if (fbdo.dataType() == "int")
-      Serial.println(fbdo.intData());
-    if (fbdo.dataType() == "int64")
-      Serial.println(fbdo.int64Data());
-    if (fbdo.dataType() == "uint64")
-      Serial.println(fbdo.uint64Data());
-    else if (fbdo.dataType() == "double")
-      Serial.println(fbdo.doubleData());
-    else if (fbdo.dataType() == "float")
-      Serial.println(fbdo.floatData());
-    else if (fbdo.dataType() == "boolean")
-      Serial.println(fbdo.boolData() == 1 ? "true" : "false");
-    else if (fbdo.dataType() == "string")
-      Serial.println(fbdo.stringData());
-    else if (fbdo.dataType() == "json")
-      Serial.println(fbdo.jsonData());
-    else if (fbdo.dataType() == "array")
-      Serial.println(fbdo.arrayData());
-  }
-  else
-  {
-    Serial.println("error, " + fbdo.errorReason());
-  }  
+  
+  firebasePush(moisture_percentage);
 
   Serial.println();
   
   delay(10000);//Wait 5 seconds before accessing sensor again.
+}
+
+
+
+
+
+
+void firebasePush(int moisture_percentage){
+
+  //String path = "/test";
+  String UID = "/000001";
+  String jsonStr;
+
+  unsigned long long tempVal = DHT.temperature;
+  unsigned long long humidVal = DHT.humidity; 
+  unsigned long long moistureVal = moisture_percentage;
+
+  char buffer[200];
+
+  sprintf(buffer, "{\"moisture\":%d,\"temperature\":%d,\"humidity\":%d}", moistureVal, tempVal, humidVal);
+  Serial.println(buffer);
+
+  if (Firebase.pushJSON(fbdo, UID, buffer))
+  {
+    Serial.println("ok");
+    Serial.println("path: " + fbdo.dataPath());
+    Serial.print("push name: ");
+    Serial.println(fbdo.pushName());
+  }
+  else
+  {
+    Serial.println("error, " + fbdo.errorReason());
+  }
 }
