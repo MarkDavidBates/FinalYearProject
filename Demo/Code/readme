@@ -1,0 +1,5 @@
+Hardware requirements:
+
+-Arduino MKR 1010 WiFi microcontroller
+-DHT11 temperature & humidity Sesnor
+-Soil Moisture sensor
