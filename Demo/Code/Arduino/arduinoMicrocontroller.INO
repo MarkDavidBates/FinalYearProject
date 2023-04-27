@@ -2,10 +2,8 @@
 #include <WiFiNINA.h>
 #include <utility/wifi_drv.h>
 #include <dht.h>
-#define DATABASE_URL "homegrower-database-default-rtdb.europe-west1.firebasedatabase.app" //<databaseName>.firebaseio.com or <databaseName>.<region>.firebasedatabase.app
-#define DATABASE_SECRET "VQckmdJ3AdryXl4vlzcFQmqtGfY6Yukvow0jl8Se"
-//#define WIFI_SSID "IoT2"
-//#define WIFI_PASSWORD "ilikecake"
+#define DATABASE_URL <YOUR URL HERE> //<databaseName>.firebaseio.com or <databaseName>.<region>.firebasedatabase.app
+#define DATABASE_SECRET <YOUR SECRET HERE>
 #define dht_apin A0
 #define sensor_pin A1
 
