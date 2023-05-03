@@ -1,9 +1,9 @@
-#include "Firebase_Arduino_WiFiNINA.h"
+#include "Firebase_Arduino_WiFiNINA.h" //repository for arduino firebase: 
 #include <WiFiNINA.h>
 #include <utility/wifi_drv.h>
 #include <dht.h>
-#define DATABASE_URL <YOUR URL HERE> //<databaseName>.firebaseio.com or <databaseName>.<region>.firebasedatabase.app
-#define DATABASE_SECRET <YOUR SECRET HERE>
+#define DATABASE_URL "<DATABASE_URL>" //<databaseName>.firebaseio.com or <databaseName>.<region>.firebasedatabase.app
+#define DATABASE_SECRET "<DATABASE_SECRET>"
 #define dht_apin A0
 #define sensor_pin A1
 
@@ -207,13 +207,9 @@ void firebasePush(int moisture_percentage, int humidity_percentage, int temperat
   String UID = "/000001";
   String jsonStr;
 
-  unsigned long long tempVal = temperature_percentage;
-  unsigned long long humidVal = humidity_percentage; 
-  unsigned long long moistureVal = moisture_percentage;
-
   char buffer[200];
 
-  sprintf(buffer, "{\"moisture\":%d,\"temperature\":%d,\"humidity\":%d}", moistureVal, tempVal, humidVal);
+  sprintf(buffer, "{\"moisture\":%d,\"temperature\":%d,\"humidity\":%d}", moisture_percentage, temperature_percentage, humidity_percentage);
   Serial.println(buffer);
 
   if (Firebase.pushJSON(fbdo, UID, buffer))
