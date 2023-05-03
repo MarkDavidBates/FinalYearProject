@@ -1,4 +1,4 @@
-#include "Firebase_Arduino_WiFiNINA.h" //repository for arduino firebase: 
+#include "Firebase_Arduino_WiFiNINA.h" //repository for arduino firebase: https://github.com/mobizt/Firebase-Arduino-WiFiNINA
 #include <WiFiNINA.h>
 #include <utility/wifi_drv.h>
 #include <dht.h>
